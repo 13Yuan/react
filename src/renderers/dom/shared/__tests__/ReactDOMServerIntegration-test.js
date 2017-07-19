@@ -752,7 +752,7 @@ describe('ReactDOMServerIntegration', () => {
       });
     });
 
-    describe('aria attributes', function() {
+    describe.skip('aria attributes', function() {
       itRenders('simple strings', async render => {
         const e = await render(<div aria-label="hello" />);
         expect(e.getAttribute('aria-label')).toBe('hello');
@@ -2545,20 +2545,6 @@ describe('ReactDOMServerIntegration', () => {
 
   describe('dynamic injection', () => {
     beforeEach(() => {
-      // HACK: we reset modules several times during the test which breaks
-      // dynamic injection. So we resort to telling resetModules() to run
-      // our custom init code every time after resetting. We could have a nicer
-      // way to do this, but this is the only test that needs it, and it will
-      // be removed anyway when we switch to static injection.
-      onAfterResetModules = () => {
-        const DOMProperty = require('DOMProperty');
-        DOMProperty.injection.injectDOMPropertyConfig({
-          isCustomAttribute: function(name) {
-            return name.indexOf('foo-') === 0;
-          },
-          Properties: {foobar: null},
-        });
-      };
       resetModules();
     });
 
